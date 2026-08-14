@@ -1,0 +1,15 @@
+services:
+  wallet-api:
+    image: miniwallet-api:latest
+    container_name: miniwallet_api_container
+
+    build:
+      context: ./src
+      dockerfile: MiniWalletSystemApi/Dockerfile
+
+    ports:
+      - "8084:8084"
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 8084
