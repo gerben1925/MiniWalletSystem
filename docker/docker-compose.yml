@@ -4,7 +4,7 @@ services:
     container_name: miniwallet_api_container
 
     build:
-      context: ./src
+      context: ../src
       dockerfile: MiniWalletSystemApi/Dockerfile
 
     ports:
@@ -13,3 +13,6 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 8084
+
+
+      ConnectionStrings__DefaultConnection: ${DB_CONNECTION_STRING}
