@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - dev
+      - staging
+      - main
+
+  pull_request:
+    branches:
+      - dev
+      - staging
+      - main
+
+env:
+  HARBOR_REGISTRY: 192.168.0.79:80
+  HARBOR_PROJECT: miniwalletsystem
+  IMAGE_NAME: miniwallet-api
+
+jobs:
+
+  build-test:
+    name: Build and Test
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --configuration Release --no-build --verbosity normal
+
+
+  docker:
+    name: Build and Push Docker Image
+    needs: build-test
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Harbor
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.HARBOR_REGISTRY }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+      - name: Build Docker Image
+        run: |
+          docker build \
+            -t ${{ env.HARBOR_REGISTRY }}/${{ env.HARBOR_PROJECT }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            -f src/MiniWalletSystemApi/Dockerfile \
+            src
+
+      - name: Push Docker Image
+        run: |
+          docker push \
+            ${{ env.HARBOR_REGISTRY }}/${{ env.HARBOR_PROJECT }}/${{ env.IMAGE_NAME }}:${{ github.sha }}

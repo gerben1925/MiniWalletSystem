@@ -33,5 +33,12 @@ namespace MiniWalletSystemApi.Controllers
             throw new InvalidOperationException("This is a test error to verify Serilog error logging.");
         }
         
+        [HttpGet("test-ci")]
+        public IActionResult TestCI()
+        {
+            return Ok("Hello, successful test ci!");
+        }
+        
+        
     }
 }
