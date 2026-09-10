@@ -14,7 +14,7 @@ services:
       - wallet_api_logs:/app/Logs
 
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: Staging
       ASPNETCORE_HTTP_PORTS: 8084
 
       OpenBao__Address: ${OPENBAO_ADDR}
