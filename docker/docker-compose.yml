@@ -14,5 +14,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 8084
 
-
-      ConnectionStrings__DefaultConnection: ${DB_CONNECTION_STRING}
+      OpenBao__Address: ${OPENBAO_ADDR}
+      OpenBao__RoleId: ${OPENBAO_ROLE_ID}
+      OpenBao__SecretId: ${OPENBAO_SECRET_ID}
+      OpenBao__SecretPath: secret/data/simplewallet/dev

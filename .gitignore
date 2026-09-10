@@ -34,3 +34,8 @@ Thumbs.db
 
 # Docker local override
 docker-compose.override.yml
+.fake
+
+
+# Core dumps
+core.*
