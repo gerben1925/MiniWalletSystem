@@ -1,0 +1,56 @@
+name: CD - DEV
+
+on:
+  push:
+    branches:
+      - dev
+
+  workflow_dispatch:
+
+env:
+  HARBOR_REGISTRY: 192.168.0.79:80
+  HARBOR_PROJECT: miniwalletsystem
+  IMAGE_NAME: miniwallet-api
+  DEPLOY_ENVIRONMENT: dev
+
+jobs:
+
+  deploy:
+    name: Deploy to DEV
+    runs-on: self-hosted
+
+    environment:
+      name: dev
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Display deployment information
+        run: |
+          echo "===================================="
+          echo "Environment : DEV"
+          echo "Image       : ${{ env.HARBOR_REGISTRY }}/${{ env.HARBOR_PROJECT }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          echo "Commit      : ${{ github.sha }}"
+          echo "===================================="
+
+      - name: Install Ansible Docker collection
+        run: |
+          ansible-galaxy collection install community.docker
+
+      - name: Deploy with Ansible
+        run: |
+          ansible-playbook \
+            -i ansible/inventory/dev/hosts.yml \
+            ansible/playbooks/deploy.yml \
+            --private-key "${{ secrets.ANSIBLE_SSH_KEY }}" \
+            -e "image_tag=${GITHUB_SHA}" \
+            -e "deploy_environment=dev" \
+            -e "aspnet_environment=Development" \
+            -e "harbor_username=${{ secrets.HARBOR_USERNAME }}" \
+            -e "harbor_password=${{ secrets.HARBOR_PASSWORD }}" \
+            -e "openbao_address=${{ secrets.DEV_OPENBAO_ADDRESS }}" \
+            -e "openbao_role_id=${{ secrets.DEV_OPENBAO_ROLE_ID }}" \
+            -e "openbao_secret_id=${{ secrets.DEV_OPENBAO_SECRET_ID }}" \
+            -e "openbao_secret_path=secret/data/simplewallet/dev"
