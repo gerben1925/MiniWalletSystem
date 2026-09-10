@@ -10,6 +10,9 @@ services:
     ports:
       - "8084:8084"
 
+    volumes:
+      - wallet_api_logs:/app/Logs
+
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 8084
@@ -18,3 +21,6 @@ services:
       OpenBao__RoleId: ${OPENBAO_ROLE_ID}
       OpenBao__SecretId: ${OPENBAO_SECRET_ID}
       OpenBao__SecretPath: secret/data/simplewallet/dev
+
+volumes:
+  wallet_api_logs:
