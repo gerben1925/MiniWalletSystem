@@ -1,0 +1,74 @@
+---
+- name: Deploy MiniWallet System API
+  hosts: all
+  become: true
+
+  vars:
+    harbor_registry: "192.168.0.79:80"
+    image_repository: "192.168.0.79:80/miniwalletsystem/miniwallet-api"
+    application_directory: "/opt/miniwallet"
+
+  tasks:
+
+    - name: Verify Docker is installed
+      ansible.builtin.command:
+        cmd: docker --version
+      register: docker_version
+      changed_when: false
+
+    - name: Display Docker version
+      ansible.builtin.debug:
+        msg: "{{ docker_version.stdout }}"
+
+    - name: Login to Harbor
+      community.docker.docker_login:
+        registry_url: "{{ harbor_registry }}"
+        username: "{{ harbor_username }}"
+        password: "{{ harbor_password }}"
+        reauthorize: true
+
+    - name: Pull MiniWallet API image
+      community.docker.docker_image:
+        name: "{{ image_repository }}"
+        tag: "{{ image_tag }}"
+        source: pull
+
+    - name: Create application directory
+      ansible.builtin.file:
+        path: "{{ application_directory }}"
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: "0755"
+
+    - name: Generate Docker Compose file
+      ansible.builtin.template:
+        src: "../roles/wallet_api/templates/docker-compose.yml.j2"
+        dest: "{{ application_directory }}/docker-compose.yml"
+        owner: ubuntu
+        group: ubuntu
+        mode: "0644"
+
+    - name: Start MiniWallet API
+      community.docker.docker_compose_v2:
+        project_src: "{{ application_directory }}"
+        state: present
+        pull: missing
+        recreate: auto
+
+    - name: Wait for MiniWallet API health endpoint
+      ansible.builtin.uri:
+        url: "http://localhost:8084/health"
+        method: GET
+        status_code: 200
+      register: health_check
+      retries: 12
+      delay: 5
+      until: health_check.status == 200
+
+    - name: Deployment successful
+      ansible.builtin.debug:
+        msg:
+          - "MiniWallet API deployment successful."
+          - "Environment: {{ deploy_environment }}"
+          - "Image: {{ image_repository }}:{{ image_tag }}"
