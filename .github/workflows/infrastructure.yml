@@ -114,6 +114,6 @@ jobs:
         run: |
           ansible-playbook \
             -i ../../ansible/inventory/inventory.yml \
-            ../../ansible/provision.yml \
+            ../../ansible/playbooks/provision.yml \
             --extra-vars "mssql_sa_password=$MSSQL_PASSWORD" \
             --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
