@@ -112,6 +112,7 @@ jobs:
         env:
           MSSQL_PASSWORD: ${{ secrets.MSSQL_SA_PASSWORD }}
         run: |
+          ANSIBLE_CONFIG=../../ansible/ansible.cfg \
           ansible-playbook \
             -i ../../ansible/inventory/inventory.yml \
             ../../ansible/playbooks/provision.yml \
