@@ -111,8 +111,8 @@ jobs:
       - name: Run Ansible Playbook
         env:
           MSSQL_PASSWORD: ${{ secrets.MSSQL_SA_PASSWORD }}
+          ANSIBLE_CONFIG: ${{ github.workspace }}/ansible/ansible.cfg
         run: |
-          ANSIBLE_CONFIG=../../ansible/ansible.cfg \
           ansible-playbook \
             -i ../../ansible/inventory/inventory.yml \
             ../../ansible/playbooks/provision.yml \
