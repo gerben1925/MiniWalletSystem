@@ -1,0 +1,37 @@
+all:
+  vars:
+    ansible_user: ubuntu
+    ansible_python_interpreter: /usr/bin/python3
+
+  children:
+
+    proxmox_vms:
+
+      children:
+
+        dev:
+          hosts:
+            ubuntu-node-development:
+              ansible_host: 192.168.0.101
+
+        staging:
+          hosts:
+            ubuntu-node-staging:
+              ansible_host: 192.168.0.102
+
+        prod:
+          hosts:
+            ubuntu-node-production:
+              ansible_host: 192.168.0.103
+
+        docker_hosts:
+          hosts:
+            ubuntu-node-development:
+            ubuntu-node-staging:
+            ubuntu-node-production:
+
+        database_nodes:
+          hosts:
+            ubuntu-node-development:
+            ubuntu-node-staging:
+            ubuntu-node-production:
