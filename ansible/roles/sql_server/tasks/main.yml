@@ -1,18 +1,21 @@
 ---
-- name: Deploy Database Services
-  hosts: database_nodes
-  become: true
-  vars:
-    mssql_sa_password: "{{ lookup('env', 'MSSQL_SA_PASSWORD') | default('password123!', true) }}"
-  tasks:
-    - name: Run MS SQL Server Docker Container
-      community.docker.docker_container:
-        name: mssql-server
-        image: mcr.microsoft.com/mssql/server:2022-latest
-        state: started
-        restart_policy: always
-        env:
-          ACCEPT_EULA: "Y"
-          MSSQL_SA_PASSWORD: "{{ mssql_sa_password }}"
-        published_ports:
-          - "1433:1433"
+- name: Validate SQL Server password
+  ansible.builtin.assert:
+    that:
+      - mssql_sa_password is defined
+      - mssql_sa_password | length >= 7
+    fail_msg: "MSSQL SA password was not provided or is too short."
+
+- name: Run SQL Server container
+  community.docker.docker_container:
+    name: mssql-server
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    state: started
+    restart_policy: always
+    env:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "{{ mssql_sa_password }}"
+    published_ports:
+      - "1433:1433"
+  when: "'database_nodes' in group_names"
+  no_log: true        

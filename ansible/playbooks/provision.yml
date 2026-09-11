@@ -6,4 +6,10 @@
   roles:
     - common
     - docker
+
+- name: Provision Database Server
+  hosts: database_nodes
+  become: true
+
+  roles:
     - sql_server
