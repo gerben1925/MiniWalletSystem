@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using MiniWalletSystemApi.Models.Payloads.Responses;
 using System.Text;
 using System.Text.Json;
+using MiniWalletSystemApi.Payloads.Responses;
 
 
 namespace MiniWalletSystemApi.Extensions

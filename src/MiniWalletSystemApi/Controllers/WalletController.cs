@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MiniWalletSystemApi.Models.Payloads.Responses;
-using MiniWalletSystemApi.Services.Interfaces;
+using MiniWalletSystemApi.Interfaces.Services;
+using MiniWalletSystemApi.Payloads.Responses;
 
 namespace MiniWalletSystemApi.Controllers
 {

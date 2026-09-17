@@ -1,7 +1,10 @@
-using MiniWalletSystemApi.Models.Entities;
-using MiniWalletSystemApi.Models.Payloads.Responses;
-using MiniWalletSystemApi.Repositories.Interfaces;
-using MiniWalletSystemApi.Services.Interfaces;
+using MiniWalletSystemApi.Entities;
+using MiniWalletSystemApi.Interfaces.Repositories;
+// using MiniWalletSystemApi.Interfaces.Repositories.Interfaces;
+using MiniWalletSystemApi.Interfaces.Services;
+using MiniWalletSystemApi.Payloads.Responses;
+
+// using MiniWalletSystemApi.Services.Interfaces;
 
 namespace MiniWalletSystemApi.Services;
 

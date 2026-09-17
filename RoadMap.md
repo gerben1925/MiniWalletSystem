@@ -6,7 +6,7 @@
 
 | #  | Feature                                                                 |
 | -- | ----------------------------------------------------------------------- |
-| 1  | User auth (register, login, JWT)                                        |
+| 1  | User auth (register, email verification, set password, login, JWT)      |                                |
 | 2  | Wallet creation + balance                                               |
 | 3  | Top-up (single payment method)                                          |
 | 4  | P2P transfer between users                                              |
@@ -24,6 +24,7 @@ OpenBao should manage sensitive configuration such as:
 * JWT signing key
 * JWT issuer/audience where appropriate
 * Database connection string
+* SMTP credentials (host, port, username, password/API key used to send verification emails)
 * External payment-provider credentials
 * API keys
 * Encryption keys
@@ -46,6 +47,7 @@ Docker / Environment
         │
         ├── JWT
         ├── Database
+        ├── SMTP (email verification)
         └── External Services
 ```
 
@@ -66,16 +68,18 @@ Non-sensitive configuration can remain in normal ASP.NET Core configuration.
 
 Two users can:
 
-1. Register
-2. Login and receive a JWT
-3. Create/use a wallet
-4. Top up their wallet
-5. Transfer money to another user
-6. View transaction history
-7. Maintain a correct balance backed by the ledger
-8. Prevent duplicate transactions using idempotency keys
-9. Enforce basic transaction limits
-10. Start the API with JWT/database secrets retrieved from OpenBao rather than hard-coded secrets
+1. Register with an email address
+2. Receive a verification email (sent via SMTP, credentials pulled from OpenBao) containing a token
+3. Use the token to set their password and activate their account
+4. Login and receive a JWT (only after verification)
+5. Create/use a wallet
+6. Top up their wallet
+7. Transfer money to another user
+8. View transaction history
+9. Maintain a correct balance backed by the ledger
+10. Prevent duplicate transactions using idempotency keys
+11. Enforce basic transaction limits
+12. Start the API with JWT/database/SMTP secrets retrieved from OpenBao rather than hard-coded secrets
 
 ---
 

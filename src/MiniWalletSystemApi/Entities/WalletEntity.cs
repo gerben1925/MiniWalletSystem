@@ -1,6 +1,4 @@
-using MiniWalletSystemApi.Models.Entities;
-
-namespace MiniWalletSystemApi.Models.Entities;
+namespace MiniWalletSystemApi.Entities;
 
 public class WalletEntity
 {

@@ -1,5 +1,5 @@
 
-namespace MiniWalletSystemApi.Models.Payloads.Responses
+namespace MiniWalletSystemApi.Payloads.Responses
 {
     public class ErrorResponse
     {

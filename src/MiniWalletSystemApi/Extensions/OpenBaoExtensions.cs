@@ -1,4 +1,6 @@
 using MiniWalletSystemApi.Infrastructure.OpenBao;
+using MiniWalletSystemApi.Interfaces.infrastructure;
+using MiniWalletSystemApi.Interfaces.infrastructure.OpenBao;
 using Polly;
 
 namespace MiniWalletSystemApi.Extensions;

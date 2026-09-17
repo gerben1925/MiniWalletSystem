@@ -1,4 +1,4 @@
-namespace MiniWalletSystemApi.Infrastructure.OpenBao;
+namespace MiniWalletSystemApi.Interfaces.infrastructure.OpenBao;
 
 public interface IOpenBaoService
 {

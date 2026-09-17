@@ -2,4 +2,5 @@
   <Folder Name="/src/">
     <Project Path="src/MiniWalletSystemApi/MiniWalletSystemApi.csproj" />
   </Folder>
+  <Project Path="tests/MiniWalletSystem.UnitTest/MiniWalletSystem.UnitTest.csproj" />
 </Solution>

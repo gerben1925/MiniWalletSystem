@@ -1,5 +1,7 @@
 using System.Text;
 using System.Text.Json;
+using MiniWalletSystemApi.Interfaces.infrastructure;
+using MiniWalletSystemApi.Interfaces.infrastructure.OpenBao;
 
 
 namespace MiniWalletSystemApi.Infrastructure.OpenBao;

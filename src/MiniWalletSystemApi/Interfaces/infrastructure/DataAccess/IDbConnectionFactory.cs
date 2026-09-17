@@ -1,6 +1,6 @@
 using System.Data;
 
-namespace MiniWalletSystemApi.Data
+namespace MiniWalletSystemApi.Interfaces.infrastructure.DataAccess
 {
     public interface IDbConnectionFactory
     {

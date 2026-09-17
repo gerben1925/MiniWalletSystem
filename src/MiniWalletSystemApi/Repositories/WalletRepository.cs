@@ -1,7 +1,7 @@
 using Dapper;
-using MiniWalletSystemApi.Data;
-using MiniWalletSystemApi.Models.Entities;
-using MiniWalletSystemApi.Repositories.Interfaces;
+using MiniWalletSystemApi.Entities;
+using MiniWalletSystemApi.Interfaces.infrastructure.DataAccess;
+using MiniWalletSystemApi.Interfaces.Repositories;
 
 namespace MiniWalletSystemApi.Repositories;
 
@@ -24,7 +24,7 @@ public class WalletRepository : IWalletRepository
         {
             const string sqlQuery = @"
             SELECT *
-            FROM [dbo].Wallet";
+            FROM [dbo].Wallets";
 
             var wallets = await connection.QueryAsync<WalletEntity>(sqlQuery);
             return wallets;

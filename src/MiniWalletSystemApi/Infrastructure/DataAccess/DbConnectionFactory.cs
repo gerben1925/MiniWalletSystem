@@ -1,8 +1,10 @@
 using Microsoft.Data.SqlClient;
 using System.Data;
+using MiniWalletSystemApi.Interfaces.infrastructure;
+using MiniWalletSystemApi.Interfaces.infrastructure.DataAccess;
 
 
-namespace MiniWalletSystemApi.Data
+namespace MiniWalletSystemApi.Infrastructure.DataAccess
 {
     public class DbConnectionFactory : IDbConnectionFactory
     {
