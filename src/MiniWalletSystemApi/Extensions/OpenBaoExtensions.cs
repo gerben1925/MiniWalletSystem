@@ -125,6 +125,29 @@ public static class OpenBaoExtensions
         var dbConnectionString = GetRequiredSecret(
             secrets,
             "DB_CONNECTION_STRING");
+        
+        var networkCredentialEmail = GetRequiredSecret(
+            secrets,
+            "NetworkCredentialEmail");
+        var networkCredentialPass = GetRequiredSecret(
+            secrets,
+            "NetworkCredentialPass");
+        var networkCredentialUsername = GetRequiredSecret(
+            secrets,
+            "NetworkCredentialUsername");
+        var smtpHost = GetRequiredSecret(
+            secrets,
+            "SmtpHost");
+        var smtpPort = GetRequiredSecret(
+            secrets,
+            "SmtpPort");
+        var enableSsl = GetRequiredSecret(
+            secrets,
+            "EnableSsl");
+        var fromEmail = GetRequiredSecret(
+            secrets,
+            "FROMEmail");
+   
 
 
         // --------------------------------------------------
@@ -142,7 +165,23 @@ public static class OpenBaoExtensions
 
         builder.Configuration["ConnectionStrings:DefaultConnection"] =
             dbConnectionString;
-
+        
+        
+        builder.Configuration["SmtpCredentials:Host"] =
+            smtpHost;
+        builder.Configuration["SmtpCredentials:Port"] =
+            smtpPort;
+        builder.Configuration["SmtpCredentials:EnableSsl"] =
+            enableSsl;
+        builder.Configuration["SmtpCredentials:NetworkCredentialEmail"] =
+            networkCredentialEmail;
+        builder.Configuration["SmtpCredentials:NetworkCredentialUsername"] =
+            networkCredentialUsername;
+        builder.Configuration["SmtpCredentials:NetworkCredentialPass"] =
+            networkCredentialPass;
+        builder.Configuration["SmtpCredentials:FROMEmail"] =
+            fromEmail;
+        
 
         Console.WriteLine(
             "[Startup] OpenBao secrets loaded successfully.");

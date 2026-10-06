@@ -2,6 +2,7 @@ using MiniWalletSystemApi.Common;
 using MiniWalletSystemApi.Entities;
 using MiniWalletSystemApi.Interfaces.infrastructure.Common;
 using MiniWalletSystemApi.Interfaces.infrastructure.Configuration;
+using MiniWalletSystemApi.Interfaces.infrastructure.Email;
 using MiniWalletSystemApi.Interfaces.Repositories;
 using MiniWalletSystemApi.Interfaces.Services;
 using MiniWalletSystemApi.Payloads.Requests;
@@ -13,18 +14,26 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IAppSettingProvider _appSettingProvider;
     private readonly IStringGenerator  _stringGenerator;
+    private readonly IEmailService _emailService;
+    private readonly IEmailTemplate _emailTemplate;
+    private readonly IAccountVerificationRepository _accountVerificationRepository;
     
-    public UserService(IUserRepository userRepository, IAppSettingProvider  appSettingProvider, IStringGenerator   stringGenerator)
+    public UserService(IUserRepository userRepository, IAppSettingProvider  appSettingProvider, IStringGenerator   stringGenerator, IEmailService  emailService, IEmailTemplate  emailTemplate,  IAccountVerificationRepository accountVerificationRepository)
     {
         _userRepository = userRepository;
         _appSettingProvider = appSettingProvider;
         _stringGenerator = stringGenerator;
+        _emailService = emailService;
+        _emailTemplate = emailTemplate;
+        _accountVerificationRepository = accountVerificationRepository;
     }
     
     public async Task<int> RegisterAsync(NewUserRequest request)
     {
         ArgumentNullException.ThrowIfNull(request);
-
+        if (await _userRepository.IsAvailableUserByEmail(request.Email))
+            return 0;
+        
         var user = MapToUserEntity(request);
         int userId = await _userRepository.RegesterNewUser(user);
 
@@ -40,11 +49,8 @@ public class UserService : IUserService
     {
         return new UserEntity
         {
-            FullName = request.FullName,
             CreatedAt = DateTime.UtcNow,
-            Email = request.Email,
-            RoleID = request.RoleID,
-            Notes = request.Notes
+            Email = request.Email
         };
     }
 
@@ -52,7 +58,7 @@ public class UserService : IUserService
     {
         return new AccountVerificationEntity
         {
-            UserID = userId,
+            UserId = userId,
             Token = token,
             CreatedAt = DateTime.UtcNow,
             IsUsed = false
@@ -73,8 +79,7 @@ public class UserService : IUserService
 
     private async Task SendVerificationEmailAsync(UserEntity user, string token, string verificationLink)
     {
-        var fullName = $"{user.FirstName} {user.LastName}".Trim();
-        var emailContent = _emailTemplateService.BuildVerificationEmailContent(fullName, user.Email, token, verificationLink);
+        var emailContent = _emailTemplate.BuildVerificationEmailContent(user.Email, token, verificationLink);
         await _emailService.SendEmailAsync(user.Email, emailContent.emailSubject, emailContent.emailBody);
     }
 

@@ -11,13 +11,13 @@ public sealed class EmailTemplate: IEmailTemplate
             _config = configuration;
         }
 
-        public (string emailSubject, string emailBody) BuildVerificationEmailContent(string? name, string? email, string token, string verificationLink)
+        public (string emailSubject, string emailBody) BuildVerificationEmailContent(string? email, string token, string verificationLink)
         {
 
             var subject = "Welcome! Your Account Has Been Created";
 
             var body = $@"
-                        <p>Hi {name ?? string.Empty},</p>
+                        <p>Hi</p>
 
                         <p>We’re happy to inform you that your account has been successfully created by our admin team.</p>
 

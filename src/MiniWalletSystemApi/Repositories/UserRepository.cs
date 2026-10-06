@@ -1,14 +1,15 @@
 using Dapper;
 using MiniWalletSystemApi.Entities;
 using MiniWalletSystemApi.Infrastructure.DataAccess;
+using MiniWalletSystemApi.Interfaces.infrastructure.DataAccess;
 using MiniWalletSystemApi.Interfaces.Repositories;
 
 namespace MiniWalletSystemApi.Repositories;
 
 public class UserRepository: IUserRepository
 {
-    private readonly DapperExecutor _dapperExecutor;
-    public UserRepository(DapperExecutor dapperExecutor)
+    private readonly IDapperExecutor _dapperExecutor;
+    public UserRepository(IDapperExecutor dapperExecutor)
     {
         _dapperExecutor = dapperExecutor;
     }
@@ -27,9 +28,9 @@ public class UserRepository: IUserRepository
         const string sql = @"
                               
                             INSERT INTO Users 
-                            (FullName, Email, RoleID, Notes)
+                            (Email, CreatedAt)
                             VALUES
-                            (@FullName, @Email, @RoleID, @Notes );
+                            (@Email, @CreatedAt);
                             
                             SELECT CAST(SCOPE_IDENTITY() AS INT);
                             ";
@@ -38,6 +39,21 @@ public class UserRepository: IUserRepository
         var result = await _dapperExecutor.ExecuteScalarAsync<int>(sql, userEntity);
         return result;  
     }
+    
+    public async Task<bool> IsAvailableUserByEmail(string email)
+    {
+        const string sqlQuery = @"
+            SELECT *
+            FROM [dbo].Users WHERE email = @Email";
+
+        var result = await _dapperExecutor.QuerySingleAsync<bool>(sqlQuery, new { Email = email });
+        if (result)
+        {
+            return  true;
+        }
+        return false;
+    }
+    
     
     
 }

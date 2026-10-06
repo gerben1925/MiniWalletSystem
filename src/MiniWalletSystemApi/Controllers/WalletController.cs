@@ -39,6 +39,5 @@ namespace MiniWalletSystemApi.Controllers
             return Ok("Hello, successful test ci!");
         }
         
-        
     }
 }

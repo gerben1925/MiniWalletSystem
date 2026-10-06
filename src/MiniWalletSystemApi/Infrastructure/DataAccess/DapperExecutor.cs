@@ -3,7 +3,7 @@ using MiniWalletSystemApi.Interfaces.infrastructure.DataAccess;
 
 namespace MiniWalletSystemApi.Infrastructure.DataAccess;
 
-public class DapperExecutor
+public class DapperExecutor : IDapperExecutor
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
 

@@ -6,4 +6,5 @@ public interface IUserRepository
 {
     Task<UserEntity> GetUserByName(string username);
     Task<int> RegesterNewUser(UserEntity userEntity);
+    Task<bool> IsAvailableUserByEmail(string email);
 }

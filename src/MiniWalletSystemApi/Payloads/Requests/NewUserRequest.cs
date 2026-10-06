@@ -1,9 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace MiniWalletSystemApi.Payloads.Requests;
 
 public class NewUserRequest
 {
-    public string FullName { get; set; } = string.Empty;
+    [Required(ErrorMessage = "Email is required.")]
+    [EmailAddress(ErrorMessage = "Valid email address is required.")]
     public string Email { get; set; } = string.Empty;
-    public int RoleID { get; set; }
-    public string Notes { get; set; } = string.Empty;
+
 }

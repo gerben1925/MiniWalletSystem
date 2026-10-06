@@ -15,6 +15,7 @@ public static class InfrastructureExtensions
 {
     public static IServiceCollection AddInfrastructureServices( this IServiceCollection services)
     {
+        services.AddScoped<IDapperExecutor, DapperExecutor>();
         services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
         services.AddScoped<IAppSettingProvider, AppSettingProvider>();
         services.AddScoped<IEmailService, EmailService>();
